@@ -1,0 +1,33 @@
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fb;
+}
+
+.app-background {
+  min-height: 100vh;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px;
+}
+
+.form-control {
+  padding: 10px;
+}
+
+.table th,
+.table td {
+  white-space: nowrap;
+}
+
+main {
+  padding-bottom: 40px;
+}
