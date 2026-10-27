@@ -3,7 +3,7 @@ services:
     build:
       context: ./ParkingFineService
       dockerfile: Dockerfile
-    image: venkatanagasasank/docker-backend-task:latest
+    image: venkatanagasasank/docker-backend-2400030709:latest
     container_name: parkingfine-backend-compose
     ports:
       - "8083:8081"
@@ -12,7 +12,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: venkatanagasasank/docker-frontend-tasks:latest
+    image: venkatanagasasank/docker-frontend-2400030709:latest
     container_name: parkingfine-frontend-compose
     ports:
       - "3000:80"
