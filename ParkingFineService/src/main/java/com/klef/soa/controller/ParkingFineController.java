@@ -19,7 +19,10 @@ import com.klef.soa.dto.ParkingFineRequest;
 import com.klef.soa.dto.ParkingFineResponse;
 import com.klef.soa.service.ParkingFineService;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:3000",
+    "http://localhost:5173"
+})
 @RestController
 @RequestMapping("/parkingfines")
 public class ParkingFineController {

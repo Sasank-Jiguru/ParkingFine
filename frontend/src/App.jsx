@@ -4,7 +4,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-const API_URL = 'http://localhost:8081/parkingfines';
+const API_URL = 'http://localhost:8083/parkingfines';
 
 function App() {
   const [fines, setFines] = useState([]);
@@ -16,12 +16,14 @@ function App() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Display all parking fines
   const loadFines = async () => {
     try {
       const response = await axios.get(`${API_URL}/displayall`);
       setFines(response.data);
       setError('');
     } catch (err) {
+      console.error('Load fines error:', err);
       setError('Unable to load parking fines. Check backend connection.');
     }
   };
@@ -30,8 +32,10 @@ function App() {
     loadFines();
   }, []);
 
+  // Add a parking fine
   const addFine = async (e) => {
     e.preventDefault();
+
     setMessage('');
     setError('');
 
@@ -52,10 +56,11 @@ function App() {
         fineNumber: fineNumber.trim(),
         vehicleNumber: vehicleNumber.trim(),
         amount: Number(amount),
-        paid: paid
+        paid: paid,
       });
 
       setMessage('Parking fine added successfully!');
+
       setFineNumber('');
       setVehicleNumber('');
       setAmount('');
@@ -63,17 +68,20 @@ function App() {
 
       await loadFines();
     } catch (err) {
+      console.error('Add fine error:', err);
+
       setError(
         typeof err.response?.data === 'string'
           ? err.response.data
           : err.response?.data?.message ||
-            'Failed to add parking fine.'
+              'Failed to add parking fine.'
       );
     } finally {
       setLoading(false);
     }
   };
 
+  // Delete a parking fine
   const deleteFine = async (id) => {
     if (!window.confirm('Are you sure you want to delete this parking fine?')) {
       return;
@@ -84,9 +92,12 @@ function App() {
 
     try {
       await axios.delete(`${API_URL}/delete/${id}`);
+
       setMessage('Parking fine deleted successfully!');
+
       await loadFines();
     } catch (err) {
+      console.error('Delete fine error:', err);
       setError('Failed to delete parking fine.');
     }
   };
@@ -104,14 +115,20 @@ function App() {
       <main className="container py-4">
         <div className="row justify-content-center">
           <div className="col-lg-10">
+
             {message && (
-              <div className="alert alert-success">{message}</div>
+              <div className="alert alert-success">
+                {message}
+              </div>
             )}
 
             {error && (
-              <div className="alert alert-danger">{error}</div>
+              <div className="alert alert-danger">
+                {error}
+              </div>
             )}
 
+            {/* Add Parking Fine Form */}
             <div className="card shadow-sm mb-4">
               <div className="card-header bg-white">
                 <h4 className="mb-0">Add Parking Fine</h4>
@@ -164,6 +181,7 @@ function App() {
                       checked={paid}
                       onChange={(e) => setPaid(e.target.checked)}
                     />
+
                     <label className="form-check-label" htmlFor="paid">
                       Fine Paid
                     </label>
@@ -180,9 +198,11 @@ function App() {
               </div>
             </div>
 
+            {/* Parking Fine Records */}
             <div className="card shadow-sm">
               <div className="card-header bg-white d-flex justify-content-between align-items-center">
                 <h4 className="mb-0">Parking Fine Records</h4>
+
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm"
@@ -217,7 +237,10 @@ function App() {
                             <td>{fine.id}</td>
                             <td>{fine.fineNumber}</td>
                             <td>{fine.vehicleNumber}</td>
-                            <td>₹{Number(fine.amount).toFixed(2)}</td>
+                            <td>
+                              ₹{Number(fine.amount).toFixed(2)}
+                            </td>
+
                             <td>
                               <span
                                 className={`badge ${
@@ -229,6 +252,7 @@ function App() {
                                 {fine.paid ? 'Paid' : 'Unpaid'}
                               </span>
                             </td>
+
                             <td>
                               <button
                                 type="button"
@@ -246,6 +270,7 @@ function App() {
                 )}
               </div>
             </div>
+
           </div>
         </div>
       </main>
